@@ -11,7 +11,9 @@ let currentUser = null; // Track current logged-in user
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
-    
+
+
+
     // Check if user is already logged in
     currentUser = localStorage.getItem('ojt_currentUser');
     
@@ -46,6 +48,37 @@ function setupEventListeners() {
         loadEntryForDate(this.value);
         updateDateDisplay();
     });
+    // ✅ NEW (auto-save)
+    document.getElementById('timeIn').addEventListener('change', autoSaveDraft);
+    document.getElementById('timeOut').addEventListener('change', autoSaveDraft);
+    document.getElementById('logDate').addEventListener('change', autoSaveDraft);
+}
+
+function autoSaveDraft() {
+    if (!currentUser) return;
+
+    const draft = {
+        date: document.getElementById('logDate').value,
+        timeIn: document.getElementById('timeIn').value,
+        timeOut: document.getElementById('timeOut').value
+    };
+
+    localStorage.setItem(`ojt_draft_${currentUser}`, JSON.stringify(draft));
+}
+
+function loadDraft() {
+    if (!currentUser) return;
+
+    const draft = localStorage.getItem(`ojt_draft_${currentUser}`);
+    if (!draft) return;
+
+    const data = JSON.parse(draft);
+
+    document.getElementById('logDate').value = data.date || '';
+    document.getElementById('timeIn').value = data.timeIn || '';
+    document.getElementById('timeOut').value = data.timeOut || '';
+
+    calculateHoursWorkedToday();
 }
 
 // ==================== AUTHENTICATION SECTION ====================
@@ -187,12 +220,36 @@ function setupTracker() {
     trackerData.dateStarted = dateStarted;
     trackerData.dailyEntries = [];
 
-    saveData();
+    saveUserData();
     displayTrackerData();
     showTrackerSection();
 }
 
 // ==================== TRACKER SECTION ====================
+
+function updateTimeDate() {
+    const now = new Date();
+
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const day = days[now.getDay()];
+
+    const date = now.toLocaleDateString(); // e.g., 3/24/2026
+
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; // Convert to 12-hour format
+
+    const time = `${hours}:${minutes}:${seconds} ${ampm}`;
+
+    document.getElementById("timeDateDisplay").innerText = `${day}, ${date} | ${time}`;
+}
+
+// Update every second
+setInterval(updateTimeDate, 1000);
+updateTimeDate(); // Initial call
+
 function displayTrackerData() {
     // Display header information
     document.getElementById('displayDateStarted').textContent = formatDate(trackerData.dateStarted);
@@ -212,6 +269,7 @@ function displayTrackerData() {
     updateProgress();
     updateDashboard();
     displayDailyLog();
+    loadDraft();
 }
 
 function updateProgress() {
@@ -233,11 +291,12 @@ function updateDashboard() {
     
     document.getElementById('hoursRendered').textContent = stats.hoursRendered.toFixed(2) + ' hrs';
     document.getElementById('daysWorked').textContent = stats.daysWorked;
-    document.getElementById('noWorkDays').textContent = stats.noWorkDays;
+
     document.getElementById('daysAbsent').textContent = stats.daysAbsent;
     document.getElementById('avgHoursPerDay').textContent = stats.avgHoursPerDay.toFixed(2) + ' hrs';
     document.getElementById('hoursRemaining').textContent = stats.hoursRemaining.toFixed(2) + ' hrs';
     document.getElementById('estimatedFinishDate').textContent = stats.estimatedFinishDate;
+    document.getElementById('daysRemaining').textContent = stats.daysRemaining > 0 ? stats.daysRemaining + ' days' : '--'
 }
 
 function calculateDashboardStats() {
@@ -246,24 +305,26 @@ function calculateDashboardStats() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    // Calculate total days elapsed
-    const totalDaysElapsed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
-    
+    const totalWorkingDays = getWorkingDaysBetween(startDate, today);
     // Days worked (entries with hours > 0)
     const daysWorked = trackerData.dailyEntries.filter(entry => entry.hoursWorked > 0).length;
     
     // No work days (entries with 0 hours)
-    const noWorkDays = trackerData.dailyEntries.filter(entry => entry.hoursWorked === 0).length;
+    // const noWorkDays = trackerData.dailyEntries.filter(entry => entry.hoursWorked === 0).length;
     
     // Days absent (no entry at all)
-    const daysAbsent = totalDaysElapsed - trackerData.dailyEntries.length;
+    const daysAbsent = totalWorkingDays - trackerData.dailyEntries.length;
     
     // Average hours per day (based on days worked)
     const avgHoursPerDay = daysWorked > 0 ? hoursRendered / daysWorked : 0;
     
     // Hours remaining
     const hoursRemaining = Math.max(trackerData.requiredHours - hoursRendered, 0);
-    
+    //==days remaining (based on average hours per day)
+    const daysRemaining = avgHoursPerDay > 0 
+    ? Math.ceil(hoursRemaining / avgHoursPerDay) 
+    : 0;
+
     // Estimated finish date
     let estimatedFinishDate = '--';
     if (avgHoursPerDay > 0) {
@@ -276,11 +337,12 @@ function calculateDashboardStats() {
     return {
         hoursRendered,
         daysWorked,
-        noWorkDays,
+        // noWorkDays,
         daysAbsent,
         avgHoursPerDay,
         hoursRemaining,
-        estimatedFinishDate
+        estimatedFinishDate,
+        daysRemaining
     };
 }
 
@@ -381,12 +443,15 @@ function saveTimeEntry() {
         alert('Please select a date');
         return;
     }
+    localStorage.removeItem(`ojt_draft_${currentUser}`);
 
     // Calculate hours with lunch break deduction
     const hoursWorked = calculateHoursWithLunchBreak(timeIn, timeOut);
 
     // Check if entry for selected date already exists
-    const existingIndex = trackerData.dailyEntries.findIndex(entry => entry.date === selectedDate);
+    const existingIndex = trackerData.dailyEntries.findIndex(
+    entry => entry.date.trim() === selectedDate.trim()
+);
     
     if (existingIndex !== -1) {
         // Update existing entry
@@ -408,7 +473,7 @@ function saveTimeEntry() {
         alert('Entry saved successfully for ' + formatDate(selectedDate) + '!');
     }
 
-    saveData();
+    saveUserData();
     clearTimeEntry();
     updateProgress();
     updateDashboard();
@@ -453,11 +518,28 @@ function displayDailyLog() {
 function deleteEntry(date) {
     if (confirm('Are you sure you want to delete this entry?')) {
         trackerData.dailyEntries = trackerData.dailyEntries.filter(entry => entry.date !== date);
-        saveData();
+        saveUserData();
         updateProgress();
         updateDashboard();
         displayDailyLog();
     }
+}
+//==Between Working Days (excluding Sundays)==
+function getWorkingDaysBetween(startDate, endDate) {
+    let count = 0;
+    let current = new Date(startDate);
+
+    while (current <= endDate) {
+        const day = current.getDay(); // 0 = Sunday, 6 = Saturday
+
+        if (day !== 0) { // exclude Sunday
+            count++;
+        }
+
+        current.setDate(current.getDate() + 1);
+    }
+
+    return count;
 }
 
 // ==================== VISIBILITY TOGGLE ====================
@@ -527,10 +609,10 @@ function loadUserData() {
     if (currentUser) {
         const userDataKey = `ojt_tracker_data_${currentUser}`;
         const savedData = localStorage.getItem(userDataKey);
+
         if (savedData) {
             trackerData = JSON.parse(savedData);
         } else {
-            // Initialize empty tracker for new user
             trackerData = {
                 requiredHours: 0,
                 usualHoursPerDay: 0,
@@ -538,9 +620,12 @@ function loadUserData() {
                 dailyEntries: []
             };
         }
+
+        if (trackerData.requiredHours > 0) {
+            displayTrackerData();
+        }
     }
 }
-
 // ==================== RESET ====================
 function resetTracker() {
     if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {

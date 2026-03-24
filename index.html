@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OJT HOURS TRACKER</title>
+    <title>FreqTime</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -13,7 +14,7 @@
             <div class="auth-container">
                 <div class="section-header">
                     <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
-                    <h1>OJT Hours Tracker</h1>
+                    <h1>OJT HOUR TRACKER</h1>
                 </div>
                 
                 <!-- Login Form -->
@@ -58,7 +59,7 @@
                 <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
                 <h1>OJT Hours Tracker</h1>
             </div>
-            <p class="subtitle">Set your training requirements</p>
+            <p class="subtitle">Set your OJT requirements</p>
             <form id="setupForm">
                 <div class="form-group">
                     <label for="requiredHours">Required Hours:</label>
@@ -81,28 +82,33 @@
 
         <!-- Time Tracking Section -->
         <div id="trackerSection" class="section hidden">
-            <div class="user-controls">
-                <span id="currentUsername" class="current-user">User</span>
-                <button type="button" class="btn-logout" onclick="handleLogout()">Logout</button>
-            </div>
-            <div class="section-header">
-                <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
-                <h1>OJT Hours Tracker</h1>
-            </div>
-            <div class="header-info">
-                <div class="info-card">
-                    <span class="label">Date Started:</span>
-                    <span id="displayDateStarted" class="value"></span>
-                </div>
-                <div class="info-card">
-                    <span class="label">Required Hours:</span>
-                    <span id="displayRequiredHours" class="value"></span>
-                </div>
-                <div class="info-card">
-                    <span class="label">Daily Target:</span>
-                    <span id="displayDailyHours" class="value"></span>
-                </div>
-            </div>
+            <div class="tracker-header">
+                <div id="timeDateDisplay" class="time-date-display"></div>
+    <div class="user-controls">
+        <span id="currentUsername" class="current-user">User</span>
+        <button type="button" class="btn-logout" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <div class="section-header">
+        <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
+        <h1>FREQTIME</h1>
+    </div>
+
+    <div class="header-info">
+        <div class="info-card">
+            <span class="label">Date Started:</span>
+            <span id="displayDateStarted" class="value"></span>
+        </div>
+        <div class="info-card">
+            <span class="label">Required Hours:</span>
+            <span id="displayRequiredHours" class="value"></span>
+        </div>
+        <div class="info-card">
+            <span class="label">Daily Target:</span>
+            <span id="displayDailyHours" class="value"></span>
+        </div>
+    </div>
+</div>
 
             <!-- Progress Bar -->
             <div class="progress-section">
@@ -138,13 +144,13 @@
                         </div>
                     </div>
 
-                    <div class="stat-card">
+                    <!-- <div class="stat-card">
                         <div class="stat-icon">😴</div>
                         <div class="stat-content">
                             <div class="stat-label">No Work Days</div>
                             <div class="stat-value" id="noWorkDays">0</div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="stat-card">
                         <div class="stat-icon">❌</div>
@@ -169,7 +175,13 @@
                             <div class="stat-value" id="hoursRemaining">0</div>
                         </div>
                     </div>
-
+                        <div class="stat-card">
+                    <div class="stat-icon">📆</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Days Remaining</div>
+                            <div class="stat-value" id="daysRemaining">0</div>
+                            </div>
+                        </div>
                     <div class="stat-card full-width">
                         <div class="stat-icon">🎯</div>
                         <div class="stat-content">
@@ -186,39 +198,44 @@
             </div>
 
             <!-- Time In/Out Section (Modal) -->
-            <div id="timeEntrySection" class="time-entry-section hidden">
-                <div class="time-entry-header">
-                    <h2>Time Entry for <span id="selectedDateDisplay">Today</span></h2>
-                    <button type="button" class="close-button" onclick="toggleTimeEntrySection()">✕</button>
-                </div>
-                <div class="time-entry-form">
-                    <div class="form-group">
-                        <label for="logDate">Select Date:</label>
-                        <input type="date" id="logDate">
-                    </div>
+<div id="timeEntrySection" class="time-entry-section hidden">
+    
+    <div class="time-entry-modal">
+        <div class="time-entry-header">
+            <h2>Time Entry for <span id="selectedDateDisplay">Today</span></h2>
+            <button type="button" class="close-button" onclick="toggleTimeEntrySection()">✕</button>
+        </div>
 
-                    <div class="form-group">
-                        <label for="timeIn">Time In:</label>
-                        <input type="time" id="timeIn">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="timeOut">Time Out:</label>
-                        <input type="time" id="timeOut">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="hoursWorkedToday">Hours Worked:</label>
-                        <input type="text" id="hoursWorkedToday" readonly>
-                    </div>
-
-                    <div class="lunch-break-note">
-                        <small>ℹ️ Lunch break (12:00 PM - 1:00 PM) is automatically deducted from working hours</small>
-                    </div>
-
-                    <button type="button" class="btn-primary" onclick="saveTimeEntry()">Save Entry</button>
-                </div>
+        <div class="time-entry-form">
+            <div class="form-group">
+                <label for="logDate">Select Date:</label>
+                <input type="date" id="logDate">
             </div>
+
+            <div class="form-group">
+                <label for="timeIn">Time In:</label>
+                <input type="time" id="timeIn">
+            </div>
+
+            <div class="form-group">
+                <label for="timeOut">Time Out:</label>
+                <input type="time" id="timeOut">
+            </div>
+
+            <div class="form-group">
+                <label for="hoursWorkedToday">Hours Worked:</label>
+                <input type="text" id="hoursWorkedToday" readonly>
+            </div>
+
+            <div class="lunch-break-note">
+                <small>ℹ️ Lunch break (12:00 PM - 1:00 PM) is automatically deducted from working hours</small>
+            </div>
+
+            <button type="button" class="btn-primary" onclick="saveTimeEntry()">Save Entry</button>
+        </div>
+    </div>
+
+</div>
 
             <!-- Daily Log -->
             <div class="log-section">
