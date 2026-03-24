@@ -562,15 +562,27 @@ function showAuthSection() {
     document.getElementById('trackerSection').classList.add('hidden');
 }
 
+// Update toggleTimeEntrySection function to set default times
 function toggleTimeEntrySection() {
-    const timeEntrySection = document.getElementById('timeEntrySection');
-    timeEntrySection.classList.toggle('hidden');
-    
-    // Close modal when clicking outside (on the backdrop)
-    if (!timeEntrySection.classList.contains('hidden')) {
-        document.addEventListener('click', closeModalOnBackdropClick);
-    } else {
-        document.removeEventListener('click', closeModalOnBackdropClick);
+    const timeEntrySection = document.getElementById("timeEntrySection");
+    const timeIn = document.getElementById("timeIn");
+    const timeOut = document.getElementById("timeOut");
+    const logDate = document.getElementById("logDate");
+
+    // Toggle visibility
+    timeEntrySection.classList.toggle("hidden");
+
+    if (!timeEntrySection.classList.contains("hidden")) {
+        // When opening the modal, set default date and times
+        const today = new Date().toISOString().split("T")[0];
+        logDate.value = today;
+
+        // Default Time In = 8:00 AM, Time Out = 5:00 PM
+        timeIn.value = "08:00";
+        timeOut.value = "17:00";
+
+        // Reset hours worked
+        document.getElementById("hoursWorkedToday").value = "";
     }
 }
 
