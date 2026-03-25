@@ -8,12 +8,13 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #eb7702 0%, #ff0245 100%);
-    height: 100vh;
+    background: linear-gradient(135deg, #eb7702 0%, #ff018c 100%);
+    min-height: 100vh;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     padding: 10px;
-    overflow: hidden;
+    
 }
 
 .header-brand {
@@ -57,7 +58,7 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #ff0245 #f5f5f5;
@@ -73,13 +74,13 @@ body {
 }
 
 .container::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #eb7702 0%, #ff0245 100%);
+    background: linear-gradient(135deg, #eb7702 0%, #ff018c 100%);
     border-radius: 10px;
     border: 2px solid #f5f5f5;
 }
 
 .container::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #d46502 0%, #e6023a 100%);
+    background: linear-gradient(135deg, #eb7702 0%, #ff018c 100%);
 }
 
 .section {
@@ -90,7 +91,7 @@ body {
     animation: fadeIn 0.3s ease-in;
     transition: all 0.3s ease;
     width: 100%;
-    max-height: 90vh;
+    max-height: none;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #ff0245 #f5f5f5;
@@ -106,13 +107,13 @@ body {
 }
 
 .section::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #eb7702 0%, #ff0245 100%);
+    background: linear-gradient(180deg, #eb7702 0%, #ff018c 100%);
     border-radius: 10px;
     border: 2px solid #f5f5f5;
 }
 
 .section::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #d46502 0%, #e6023a 100%);
+    background: linear-gradient(180deg, #d46502 0%, #ff018c 100%);
 }
 
 .section.hidden {
@@ -217,7 +218,7 @@ body {
 }
 
 .tracker-header {
-    position: sticky;
+    position: static;
     top: 0;
     z-index: 999;
     background: white;
@@ -300,7 +301,7 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
     outline: none;
-    border-color: #eb7702;
+    border-color: #f36608;
     box-shadow: 0 0 0 3px rgba(235, 119, 2, 0.1);
 }
 
@@ -620,7 +621,7 @@ input[type="text"]:read-only {
     margin: 0;
     font-size: 1.6em;
     font-weight: 700;
-    background: linear-gradient(135deg, #eb7702 0%, #ff0245 100%);
+    background: linear-gradient(135deg, #eb7702 0%, #ff018c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -646,7 +647,7 @@ input[type="text"]:read-only {
 }
 
 .close-button:hover {
-    background: linear-gradient(135deg, #eb7702 0%, #ff0245 100%);
+    background: linear-gradient(135deg, #eb7702 0%, #ff018c 100%);
     color: white;
     border-color: #eb7702;
     transform: rotate(90deg);
@@ -759,7 +760,7 @@ input[type="text"]:read-only {
 
 .lunch-break-note {
     grid-column: 1 / -1;
-    background: linear-gradient(135deg, #fff8f5 0%, #ffe8dc 100%);
+    background: linear-gradient(135deg, #faf8f7 0%, #f5e7e0 100%);
     border: 2px solid #eb7702;
     border-left: 4px solid #eb7702;
     padding: 14px;
@@ -882,7 +883,12 @@ input[type="text"]:read-only {
         padding: 24px;
         border-radius: 12px;
     }
-
+    .time-entry-modal {
+    width: 95%;
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+}
     .time-entry-header h2 {
         font-size: 1.3em;
     }
@@ -946,7 +952,7 @@ input[type="text"]:read-only {
     }
 
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 
     .stat-card.full-width {
@@ -963,8 +969,8 @@ input[type="text"]:read-only {
     }
 
     .form-group {
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        align-items: stretch;
         gap: 10px;
     }
 
