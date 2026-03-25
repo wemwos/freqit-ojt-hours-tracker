@@ -662,7 +662,3 @@ function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString + 'T00:00:00').toLocaleDateString('en-US', options);
 }
-
-import { injectSpeedInsights } from '@vercel/speed-insights';
-
-injectSpeedInsights();

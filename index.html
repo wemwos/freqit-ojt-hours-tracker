@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +9,9 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <script>
-  window.si = window.si || function () { (window.si.q = window.si.q || []).push(arguments); };
+    window.si = window.si || function () { (window.si.q = window.si.q || []).push(arguments); };
 </script>
 <script src="/_vercel/speed-insights/script.js"></script>
 
@@ -22,9 +22,8 @@
             <div class="auth-container">
                 <div class="section-header">
                     <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
-                    
                 </div>
-                
+
                 <!-- Login Form -->
                 <div id="loginForm" class="auth-form active">
                     <h3>Login</h3>
@@ -65,7 +64,6 @@
         <div id="setupSection" class="section">
             <div class="section-header">
                 <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
-                <h1>OJT Hours Tracker</h1>
             </div>
             <p class="subtitle">Set your OJT requirements</p>
             <form id="setupForm">
@@ -89,177 +87,162 @@
         </div>
 
         <!-- Time Tracking Section -->
-        <div id="trackerSection" class="section hidden">
-            <div class="tracker-header">
+        <div id="trackerSection" class="section">
+            <!-- Fixed Top Bar -->
+            <div class="top-bar">
                 <div id="timeDateDisplay" class="time-date-display"></div>
-    <div class="user-controls">
-        <span id="currentUsername" class="current-user">User</span>
-        <button type="button" class="btn-logout" onclick="handleLogout()">Logout</button>
-    </div>
-
-    <div class="section-header">
-        <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
-        <!-- <h1>FREQtime</h1> -->
-    </div>
-
-    <div class="header-info">
-        <div class="info-card">
-            <span class="label">Date Started:</span>
-            <span id="displayDateStarted" class="value"></span>
-        </div>
-        <div class="info-card">
-            <span class="label">Required Hours:</span>
-            <span id="displayRequiredHours" class="value"></span>
-        </div>
-        <div class="info-card">
-            <span class="label">Daily Target:</span>
-            <span id="displayDailyHours" class="value"></span>
-        </div>
-    </div>
-</div>
-
-            <!-- Progress Bar -->
-            <div class="progress-section">
-                <div class="progress-header">
-                    <span>Total Progress</span>
-                    <span id="progressPercentage" class="percentage">0%</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
-                </div>
-                <div class="progress-info">
-                    <span id="hoursCompleted">0</span> / <span id="totalRequired">0</span> hours
+                <div class="user-controls">
+                    <span id="currentUsername" class="current-user">User</span>
+                    <button type="button" class="btn-logout" onclick="handleLogout()">Logout</button>
                 </div>
             </div>
 
-            <!-- Dashboard Section -->
-            <div class="dashboard-section">
-                <h2>Dashboard</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">⏱️</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Hours Rendered</div>
-                            <div class="stat-value" id="hoursRendered">0</div>
-                        </div>
-                    </div>
+            <!-- Scrollable Tracker Content -->
+            <div class="tracker-content">
+                <div class="section-header">
+                    <img class="section-logo" src="logo.png" alt="FreqIT Solutions">
+                </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon">📅</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Days Worked</div>
-                            <div class="stat-value" id="daysWorked">0</div>
-                        </div>
+                <div class="header-info">
+                    <div class="info-card">
+                        <span class="label">Date Started:</span>
+                        <span id="displayDateStarted" class="value"></span>
                     </div>
-
-                    <!-- <div class="stat-card">
-                        <div class="stat-icon">😴</div>
-                        <div class="stat-content">
-                            <div class="stat-label">No Work Days</div>
-                            <div class="stat-value" id="noWorkDays">0</div>
-                        </div>
-                    </div> -->
-
-                    <div class="stat-card">
-                        <div class="stat-icon">❌</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Days Absent</div>
-                            <div class="stat-value" id="daysAbsent">0</div>
-                        </div>
+                    <div class="info-card">
+                        <span class="label">Required Hours:</span>
+                        <span id="displayRequiredHours" class="value"></span>
                     </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon">📊</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Avg Hours/Day</div>
-                            <div class="stat-value" id="avgHoursPerDay">0</div>
-                        </div>
+                    <div class="info-card">
+                        <span class="label">Daily Target:</span>
+                        <span id="displayDailyHours" class="value"></span>
                     </div>
+                </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon">⏳</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Hours Remaining</div>
-                            <div class="stat-value" id="hoursRemaining">0</div>
-                        </div>
+                <!-- Progress Section -->
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>Total Progress</span>
+                        <span id="progressPercentage" class="percentage">0%</span>
                     </div>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span id="hoursCompleted">0</span> / <span id="totalRequired">0</span> hours
+                    </div>
+                </div>
+
+                <!-- Dashboard Section -->
+                <div class="dashboard-section">
+                    <h2>Dashboard</h2>
+                    <div class="stats-grid">
                         <div class="stat-card">
-                    <div class="stat-icon">📆</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Days Remaining</div>
-                            <div class="stat-value" id="daysRemaining">0</div>
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Hours Rendered</div>
+                                <div class="stat-value" id="hoursRendered">0</div>
                             </div>
                         </div>
-                    <div class="stat-card full-width">
-                        <div class="stat-icon">🎯</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Estimated Finish Date</div>
-                            <div class="stat-value" id="estimatedFinishDate">--</div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Days Worked</div>
+                                <div class="stat-value" id="daysWorked">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">❌</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Days Absent</div>
+                                <div class="stat-value" id="daysAbsent">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Avg Hours/Day</div>
+                                <div class="stat-value" id="avgHoursPerDay">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏳</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Hours Remaining</div>
+                                <div class="stat-value" id="hoursRemaining">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📆</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Days Remaining</div>
+                                <div class="stat-value" id="daysRemaining">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card full-width">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Estimated Finish Date</div>
+                                <div class="stat-value" id="estimatedFinishDate">--</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Add Entry Button -->
-            <div class="add-entry-button-container">
-                <button type="button" class="btn-primary" onclick="toggleTimeEntrySection()">Add Entry</button>
-            </div>
-
-            <!-- Time In/Out Section (Modal) -->
-<div id="timeEntrySection" class="time-entry-section hidden">
-    
-    <div class="time-entry-modal">
-        <div class="time-entry-header">
-            <h2>Time Entry for <span id="selectedDateDisplay">Today</span></h2>
-            <button type="button" class="close-button" onclick="toggleTimeEntrySection()">✕</button>
-        </div>
-
-        <div class="time-entry-form">
-            <div class="form-group">
-                <label for="logDate">Select Date:</label>
-                <input type="date" id="logDate">
-            </div>
-
-            <div class="form-group">
-                <label for="timeIn">Time In:</label>
-                <input type="time" id="timeIn">
-            </div>
-
-            <div class="form-group">
-                <label for="timeOut">Time Out:</label>
-                <input type="time" id="timeOut">
-            </div>
-
-            <div class="form-group">
-                <label for="hoursWorkedToday">Hours Worked:</label>
-                <input type="text" id="hoursWorkedToday" readonly>
-            </div>
-
-            <div class="lunch-break-note">
-                <small>ℹ️ Lunch break (12:00 PM - 1:00 PM) is automatically deducted from working hours</small>
-            </div>
-
-            <button type="button" class="btn-primary" onclick="saveTimeEntry()">Save Entry</button>
-        </div>
-    </div>
-
-</div>
-
-            <!-- Daily Log -->
-            <div class="log-section">
-                <h2>Daily Log</h2>
-                <div id="dailyLog" class="log-container">
-                    <p class="empty-message">No entries yet</p>
+                <!-- Add Entry Button -->
+                <div class="add-entry-button-container">
+                    <button type="button" class="btn-primary" onclick="toggleTimeEntrySection()">Add Entry</button>
                 </div>
-            </div>
 
-            <!-- Reset Button -->
-            <div class="footer">
-                <button type="button" class="btn-danger" onclick="resetTracker()">Reset All Data</button>
-            </div>
-        </div>
-    </div>
+                <!-- Time Entry Modal -->
+                <div id="timeEntrySection" class="time-entry-section hidden">
+                    <div class="time-entry-modal">
+                        <div class="time-entry-header">
+                            <h2>Time Entry for <span id="selectedDateDisplay">Today</span></h2>
+                            <button type="button" class="close-button" onclick="toggleTimeEntrySection()">✕</button>
+                        </div>
+                        <div class="time-entry-form">
+                            <div class="form-group">
+                                <label for="logDate">Select Date:</label>
+                                <input type="date" id="logDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="timeIn">Time In:</label>
+                                <input type="time" id="timeIn">
+                            </div>
+                            <div class="form-group">
+                                <label for="timeOut">Time Out:</label>
+                                <input type="time" id="timeOut">
+                            </div>
+                            <div class="form-group">
+                                <label for="hoursWorkedToday">Hours Worked:</label>
+                                <input type="text" id="hoursWorkedToday" readonly>
+                            </div>
+                            <div class="lunch-break-note">
+                                <small>ℹ️ Lunch break (12:00 PM - 1:00 PM) is automatically deducted from working hours</small>
+                            </div>
+                            <button type="button" class="btn-primary" onclick="saveTimeEntry()">Save Entry</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Log -->
+                <div class="log-section">
+                    <h2>Daily Log</h2>
+                    <div id="dailyLog" class="log-container">
+                        <p class="empty-message">No entries yet</p>
+                    </div>
+                </div>
+
+                <!-- Reset Button -->
+                <div class="footer">
+                    <button type="button" class="btn-danger" onclick="resetTracker()">Reset All Data</button>
+                </div>
+
+            </div> <!-- End tracker-content -->
+        </div> <!-- End trackerSection -->
+    </div> <!-- End container -->
 
     <script src="script.js"></script>
 </body>
+
 </html>
