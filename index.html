@@ -193,6 +193,47 @@
                     <button type="button" class="btn-primary" onclick="toggleTimeEntrySection()">Add Entry</button>
                 </div>
 
+                <!-- Mini Game Section -->
+                <div class="game-section">
+                    <div class="game-header">
+                        <h2>🎮 Productivity Power-Up</h2>
+                        <p class="game-subtitle">Take a break and boost your energy!</p>
+                    </div>
+                    <div class="game-container">
+                        <div class="power-meter-wrapper">
+                            <div class="power-label">Power: <span id="gamePower">0</span> / 100</div>
+                            <div class="power-meter">
+                                <div class="power-fill" id="powerFill"></div>
+                            </div>
+                        </div>
+                        <button type="button" class="game-button" id="gameButton" onclick="clickPowerButton()">
+                            <span class="button-emoji">⚡</span>
+                            <span class="button-text">Click for Power!</span>
+                        </button>
+                        <div class="game-stats">
+                            <div class="stat">
+                                <span class="stat-title">Score:</span>
+                                <span class="stat-value" id="gameScore">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-title">Clicks:</span>
+                                <span class="stat-value" id="gameClicks">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-title">Streak:</span>
+                                <span class="stat-value" id="gameStreak">0</span>
+                            </div>
+                        </div>
+                        <div class="achievements-section">
+                            <div class="achievements-title">🏆 Achievements</div>
+                            <div class="achievements-list" id="achievementsList">
+                                <p class="empty-message">Click to earn achievements!</p>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-secondary" onclick="resetGame()">Reset Game</button>
+                    </div>
+                </div>
+
                 <!-- Time Entry Modal -->
                 <div id="timeEntrySection" class="time-entry-section hidden">
                     <div class="time-entry-modal">
@@ -201,9 +242,30 @@
                             <button type="button" class="close-button" onclick="toggleTimeEntrySection()">✕</button>
                         </div>
                         <div class="time-entry-form">
-                            <div class="form-group">
+                            <div class="form-group date-mode-toggle">
+                                <label>
+                                    <input type="checkbox" id="dateRangeToggle" onchange="toggleDateRangeMode()">
+                                    <span>Apply to multiple dates</span>
+                                </label>
+                            </div>
+                            <div class="form-group" id="singleDateGroup">
                                 <label for="logDate">Select Date:</label>
                                 <input type="date" id="logDate">
+                            </div>
+                            <div class="form-group hidden" id="dateRangeGroup">
+                                <label for="logDateFrom">From Date:</label>
+                                <input type="date" id="logDateFrom">
+                            </div>
+                            <div class="form-group hidden" id="dateRangeToGroup">
+                                <label for="logDateTo">To Date:</label>
+                                <input type="date" id="logDateTo">
+                            </div>
+                            <div class="form-group hidden" id="dayTypeGroup">
+                                <label for="dayType">Apply to:</label>
+                                <select id="dayType">
+                                    <option value="all">All Days</option>
+                                    <option value="weekdays" selected>Weekdays Only (Mon-Fri)</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="timeIn">Time In:</label>
@@ -222,6 +284,33 @@
                             </div>
                             <button type="button" class="btn-primary" onclick="saveTimeEntry()">Save Entry</button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Holidays Management Section -->
+                <div class="holidays-section">
+                    <div class="section-header-inline">
+                        <h2>Holidays & Days Off</h2>
+                        <button type="button" class="btn-secondary-small" onclick="toggleAddHolidayForm()">+ Add Holiday</button>
+                    </div>
+                    
+                    <!-- Add Holiday Form -->
+                    <div id="addHolidayForm" class="holiday-form hidden">
+                        <div class="form-group">
+                            <label for="holidayDate">Select Date:</label>
+                            <input type="date" id="holidayDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="holidayReason">Reason (Optional):</label>
+                            <input type="text" id="holidayReason" placeholder="e.g., Christmas, Birthday, Sick Leave">
+                        </div>
+                        <button type="button" class="btn-primary" onclick="addHoliday()">Add Holiday</button>
+                        <button type="button" class="btn-secondary" onclick="toggleAddHolidayForm()">Cancel</button>
+                    </div>
+
+                    <!-- Holidays List -->
+                    <div id="holidaysList" class="holidays-list">
+                        <p class="empty-message">No holidays set yet</p>
                     </div>
                 </div>
 
